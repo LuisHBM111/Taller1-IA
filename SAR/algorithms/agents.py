@@ -62,6 +62,7 @@ class SearchAgent(Agent):
             raise Exception("No search function provided for SearchAgent")
 
         starttime = time.time()
+        print(starttime)
         problem = self.searchType(state)  # Create the search problem
         self.actions = self.searchFunction(problem)  # Find path using search algorithm
 
