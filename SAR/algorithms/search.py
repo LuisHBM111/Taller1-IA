@@ -73,12 +73,35 @@ def breadthFirstSearch(problem: SearchProblem):
     return []
 
 def uniformCostSearch(problem: SearchProblem):
-    """
-    Search the node of least total cost first.
-    """
+    
+    #la pampara estuvo aqui
+    pq = utils.PriorityQueue() # esto pa expandir el menor g(n)
 
-    # TODO: Add your code here
-    utils.raiseNotDefined()
+    start = problem.getStartState()
+    pq.push((start, [], 0), 0)  # esto pa llevar el estado, acciones y costo acumulado, prioridad g (n)
+
+    visited = {}  #menor costo hasta ahora
+    visited[start] = 0
+
+    while not pq.isEmpty():
+        state, path, cost = pq.pop()
+
+        #verificar si ya tengo una mejor forma d ellegar pa saltarlo 
+        if cost > visited.get(state, float("inf")):
+            continue
+
+        if problem.isGoalState(state):
+            return path
+
+        for succ, action, stepCost in problem.getSuccessors(state):
+            newCost = cost + stepCost
+
+            #verificar si lo visite o si tengo una mejor forma de llegar
+            if succ not in visited or newCost < visited[succ]:
+                visited[succ] = newCost
+                pq.push((succ, path + [action], newCost), newCost)
+
+    return []
 
 
 def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic):
